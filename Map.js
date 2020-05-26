@@ -26,4 +26,13 @@ function Map() {
       }
     }
   };
+
+  this.wallCollisionDetector = (x, y) => {
+    if (x < 0 || x > WINDOW_WIDTH || y < 0 || y > WINDOW_HEIGHT) return true;
+
+    const col = Math.floor(x / TILE_SIZE);
+    const row = Math.floor(y / TILE_SIZE);
+
+    return this.grid[row][col] === 1;
+  };
 }

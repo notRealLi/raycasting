@@ -8,7 +8,7 @@ function setup() {
 }
 
 function update() {
-  player.update();
+  player.update(map.wallCollisionDetector);
 }
 
 function draw() {

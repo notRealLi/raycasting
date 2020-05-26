@@ -21,7 +21,16 @@ function Player() {
     );
   };
 
-  this.update = () => {
+  this.update = (wallCollisionDetector) => {
     this.rotation += this.turnDirection * this.turnSpeed;
+    const nextX =
+      this.x + this.moveDirection * this.moveSpeed * Math.cos(this.rotation);
+    const nextY =
+      this.y + this.moveDirection * this.moveSpeed * Math.sin(this.rotation);
+
+    if (!wallCollisionDetector(nextX, nextY)) {
+      this.x = nextX;
+      this.y = nextY;
+    }
   };
 }
