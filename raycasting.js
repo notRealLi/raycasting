@@ -1,20 +1,24 @@
 let map;
 let player;
+let rays;
 
 function setup() {
   createCanvas(WINDOW_WIDTH, WINDOW_HEIGHT);
   map = new Map();
   player = new Player();
+  rays = new Rays();
 }
 
 function update() {
   player.update(map.wallCollisionDetector);
+  rays.castAll(player);
 }
 
 function draw() {
   update();
 
   map.render();
+  rays.renderAll(player.x, player.y);
   player.render();
 }
 
