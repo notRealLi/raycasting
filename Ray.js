@@ -9,14 +9,7 @@ function Ray(angle) {
 
   this.render = (startX, startY) => {
     stroke("rgba(255, 0, 0, 0.25)");
-    line(
-      startX,
-      startY,
-      this.wallHitX,
-      this.wallHitY
-      //startX + 30 * Math.cos(angle),
-      //startY + 30 * Math.sin(angle)
-    );
+    line(startX, startY, this.wallHitX, this.wallHitY);
   };
 
   this.cast = (startX, startY, tileSize, grid) => {
@@ -50,7 +43,6 @@ function Ray(angle) {
       const col = Math.floor(nextHorizontalX / tileSize);
 
       if (grid[row][col] === 1) {
-        console.log("1", row, col, nextHorizontalX, nextHorizontalY);
         foundHorizontalIntercept = true;
         break;
       }
@@ -86,7 +78,6 @@ function Ray(angle) {
       const row = Math.floor(nextVerticalY / tileSize);
 
       if (grid[row][col] === 1) {
-        console.log("2", row, col, nextVerticalX, nextVerticalY);
         foundVerticalIntercept = true;
         break;
       }
@@ -102,8 +93,8 @@ function Ray(angle) {
       this.wallHitX = nextVerticalX;
       this.wallHitY = nextVerticalY;
     } else if (
-      distance(nextHorizontalX, nextHorizontalY, startX, startY) <
-      distance(nextVerticalX, nextVerticalY, startX, startY)
+      distanceBetween(nextHorizontalX, nextHorizontalY, startX, startY) <
+      distanceBetween(nextVerticalX, nextVerticalY, startX, startY)
     ) {
       this.wallHitX = nextHorizontalX;
       this.wallHitY = nextHorizontalY;
@@ -111,13 +102,6 @@ function Ray(angle) {
       this.wallHitX = nextVerticalX;
       this.wallHitY = nextVerticalY;
     }
-    // console.log(
-    //   this.isFacingLeft ? "Left" : "Right",
-    //   this.isFacingUp ? "Up" : "Down"
-    // );
-    console.log("step", xStep, yStep);
-    console.log("player", startX, startY);
-    console.log("final", this.wallHitX, this.wallHitY);
   };
 }
 
@@ -125,8 +109,6 @@ function Rays() {
   this.rays = [];
 
   this.castAll = (player, map) => {
-    let cur_col = 0;
-
     let ray_angle = player.rotation - FOV_ANGLE / 2;
     this.rays = [];
     for (let i = 0; i < NUM_RAYS; i++) {
@@ -135,7 +117,6 @@ function Rays() {
       this.rays.push(ray);
 
       ray_angle += FOV_ANGLE / NUM_RAYS;
-      cur_col++;
     }
   };
 
