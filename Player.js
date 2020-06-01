@@ -12,13 +12,13 @@ function Player() {
     noStroke();
     fill("red");
     circle(this.x, this.y, this.radius);
-    stroke("red");
-    line(
-      this.x,
-      this.y,
-      this.x + 20 * Math.cos(this.rotation),
-      this.y + 20 * Math.sin(this.rotation)
-    );
+    // stroke("red");
+    // line(
+    //   this.x,
+    //   this.y,
+    //   this.x + 20 * Math.cos(this.rotation),
+    //   this.y + 20 * Math.sin(this.rotation)
+    // );
   };
 
   this.update = (wallCollisionDetector) => {

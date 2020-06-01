@@ -1,4 +1,5 @@
 function Map() {
+  this.tileSize = TILE_SIZE;
   this.grid = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],

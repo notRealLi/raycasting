@@ -11,7 +11,7 @@ function setup() {
 
 function update() {
   player.update(map.wallCollisionDetector);
-  rays.castAll(player);
+  rays.castAll(player, map);
 }
 
 function draw() {
