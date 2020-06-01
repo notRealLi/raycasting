@@ -20,6 +20,10 @@ function Ray(angle) {
   };
 
   this.cast = (startX, startY, tileSize, grid) => {
+    let foundHorizontalIntercept = false;
+    let foundVerticalIntercept = false;
+
+    // horizontal intercept
     let yIntercept = this.isFacingUp
       ? Math.floor(startY / tileSize) * tileSize
       : Math.ceil(startY / tileSize) * tileSize;
@@ -31,31 +35,89 @@ function Ray(angle) {
     xStep *= this.isFacingLeft && xStep > 0 ? -1 : 1;
     xStep *= this.isFacingRight && xStep < 0 ? -1 : 1;
 
+    let nextHorizontalX = xIntercept;
+    let nextHorizontalY = yIntercept;
+
     while (
-      xIntercept < grid[0].length * tileSize &&
-      xIntercept > 0 &&
-      yIntercept < grid.length * tileSize &&
-      yIntercept > 0
+      nextHorizontalX < grid[0].length * tileSize &&
+      nextHorizontalX > 0 &&
+      nextHorizontalY < grid.length * tileSize &&
+      nextHorizontalY > 0
     ) {
       const row = this.isFacingUp
-        ? yIntercept / tileSize - 1
-        : yIntercept / tileSize;
-      const col = Math.floor(xIntercept / tileSize);
+        ? nextHorizontalY / tileSize - 1
+        : nextHorizontalY / tileSize;
+      const col = Math.floor(nextHorizontalX / tileSize);
 
       if (grid[row][col] === 1) {
+        console.log("1", row, col, nextHorizontalX, nextHorizontalY);
+        foundHorizontalIntercept = true;
         break;
       }
 
-      yIntercept += yStep;
-      xIntercept += xStep;
+      nextHorizontalX += xStep;
+      nextHorizontalY += yStep;
     }
 
-    this.wallHitX = xIntercept;
-    this.wallHitY = yIntercept;
+    // vertical intercept
+    xIntercept = this.isFacingLeft
+      ? Math.floor(startX / tileSize) * tileSize
+      : Math.ceil(startX / tileSize) * tileSize;
+    yIntercept = startY + (xIntercept - startX) * Math.tan(this.angle);
 
-    // const firstVerticalxIntercept = Math.ceil(startX / tileSize);
-    // const firstVerticalyIntercept =
-    //   startY - (firstVerticalxIntercept - startX) * Math.tan(this.angle);
+    xStep = tileSize;
+    xStep *= this.isFacingLeft ? -1 : 1;
+    yStep = tileSize * Math.tan(this.angle);
+    yStep *= this.isFacingDown && yStep < 0 ? -1 : 1;
+    yStep *= this.isFacingUp && yStep > 0 ? -1 : 1;
+
+    let nextVerticalX = xIntercept;
+    let nextVerticalY = yIntercept;
+
+    while (
+      nextVerticalX <= grid[0].length * tileSize &&
+      nextVerticalX >= 0 &&
+      nextVerticalY <= grid.length * tileSize &&
+      nextVerticalY >= 0
+    ) {
+      const col = this.isFacingLeft
+        ? nextVerticalX / tileSize - 1
+        : nextVerticalX / tileSize;
+      const row = Math.floor(nextVerticalY / tileSize);
+
+      if (grid[row][col] === 1) {
+        console.log("2", row, col, nextVerticalX, nextVerticalY);
+        foundVerticalIntercept = true;
+        break;
+      }
+
+      nextVerticalX += xStep;
+      nextVerticalY += yStep;
+    }
+
+    if (foundHorizontalIntercept && !foundVerticalIntercept) {
+      this.wallHitX = nextHorizontalX;
+      this.wallHitY = nextHorizontalY;
+    } else if (foundVerticalIntercept && !foundHorizontalIntercept) {
+      this.wallHitX = nextVerticalX;
+      this.wallHitY = nextVerticalY;
+    } else if (
+      distance(nextHorizontalX, nextHorizontalY, startX, startY) <
+      distance(nextVerticalX, nextVerticalY, startX, startY)
+    ) {
+      this.wallHitX = nextHorizontalX;
+      this.wallHitY = nextHorizontalY;
+    } else {
+      this.wallHitX = nextVerticalX;
+      this.wallHitY = nextVerticalY;
+    }
+    // console.log(
+    //   this.isFacingLeft ? "Left" : "Right",
+    //   this.isFacingUp ? "Up" : "Down"
+    // );
+    console.log("step", xStep, yStep);
+    console.log("player", startX, startY);
+    console.log("final", this.wallHitX, this.wallHitY);
   };
 }
 
@@ -67,7 +129,7 @@ function Rays() {
 
     let ray_angle = player.rotation - FOV_ANGLE / 2;
     this.rays = [];
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < NUM_RAYS; i++) {
       let ray = new Ray(ray_angle);
       ray.cast(player.x, player.y, map.tileSize, map.grid);
       this.rays.push(ray);

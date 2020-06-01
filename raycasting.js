@@ -45,3 +45,7 @@ function keyReleased() {
     player.turnDirection = 0;
   }
 }
+
+function mousePressed() {
+  console.log(rays.rays[0].wallHitX, rays.rays[0].wallHitY);
+}
