@@ -1,5 +1,6 @@
 function Ray(angle) {
   this.angle = normalizeAngle(angle);
+  this.distance = 0;
   this.wallHitX = 0;
   this.wallHitY = 0;
   this.isFacingDown = this.angle > 0 && this.angle < Math.PI;
@@ -7,9 +8,14 @@ function Ray(angle) {
   this.isFacingRight = this.angle < 0.5 * Math.PI || this.angle > 1.5 * Math.PI;
   this.isFacingLeft = !this.isFacingRight;
 
-  this.render = (startX, startY) => {
+  this.render = (startX, startY, scale = 1) => {
     stroke("rgba(255, 0, 0, 0.25)");
-    line(startX, startY, this.wallHitX, this.wallHitY);
+    line(
+      startX * scale,
+      startY * scale,
+      this.wallHitX * scale,
+      this.wallHitY * scale
+    );
   };
 
   this.cast = (startX, startY, tileSize, grid) => {
@@ -102,11 +108,26 @@ function Ray(angle) {
       this.wallHitX = nextVerticalX;
       this.wallHitY = nextVerticalY;
     }
+
+    this.distance = distanceBetween(
+      startX,
+      startY,
+      this.wallHitX,
+      this.wallHitY
+    );
   };
 }
 
 function Rays() {
   this.rays = [];
+
+  this.size = () => {
+    return this.rays.length;
+  };
+
+  this.get = (i) => {
+    return this.rays[i];
+  };
 
   this.castAll = (player, map) => {
     let ray_angle = player.rotation - FOV_ANGLE / 2;
@@ -120,9 +141,9 @@ function Rays() {
     }
   };
 
-  this.renderAll = (x, y) => {
+  this.renderAll = (x, y, scale = 1) => {
     this.rays.forEach((ray) => {
-      ray.render(x, y);
+      ray.render(x, y, scale);
     });
   };
 }

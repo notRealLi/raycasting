@@ -9,13 +9,13 @@ function Map() {
     [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   ];
   this.rays = [];
 
-  this.render = () => {
+  this.render = (scale = 1) => {
     for (let i = 0; i < NUM_ROWS; i++) {
       for (let j = 0; j < NUM_COLS; j++) {
         const x = TILE_SIZE * j;
@@ -24,7 +24,7 @@ function Map() {
 
         stroke("#222");
         fill(tileColor);
-        rect(x, y, TILE_SIZE, TILE_SIZE);
+        rect(x * scale, y * scale, TILE_SIZE * scale, TILE_SIZE * scale);
       }
     }
   };

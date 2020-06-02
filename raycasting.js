@@ -17,9 +17,31 @@ function update() {
 function draw() {
   update();
 
-  map.render();
-  rays.renderAll(player.x, player.y);
-  player.render();
+  clear("#555");
+  render3DProjectedWalls();
+  map.render(MINI_MAP_SCALE_FACTOR);
+  rays.renderAll(player.x, player.y, MINI_MAP_SCALE_FACTOR);
+  player.render(MINI_MAP_SCALE_FACTOR);
+}
+
+function render3DProjectedWalls() {
+  for (let i = 0; i < rays.size(); i++) {
+    const ray = rays.get(i);
+
+    const distanceToWall2D = ray.distance;
+    const wallHeight2D = TILE_SIZE; // not necessarily tied to TILE_SIZE
+    const distanceToWall3D = (WINDOW_WIDTH * 0.5) / Math.tan(FOV_ANGLE / 2);
+
+    // wallHeight3D / wallHeight2D = distanceToWall3D / distanceToWall2D
+    const wallHeight3D = (distanceToWall3D / distanceToWall2D) * wallHeight2D;
+    const wallWidth3D = WALL_STRIP_WIDTH; // same as width of ray
+    const wallPosX3D = i * wallWidth3D;
+    const wallPosY3D = (WINDOW_HEIGHT - wallHeight3D) * 0.5;
+
+    fill("rgba(255, 255, 255, 1)");
+    noStroke();
+    rect(wallPosX3D, wallPosY3D, wallWidth3D, wallHeight3D);
+  }
 }
 
 function keyPressed() {
