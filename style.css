@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #555;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+  border: solid 8px #fff;
+}
+
+.text {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  flex-wrap: wrap;
+}
+
+.line {
+  width: 100%;
+  text-align: center;
+}
