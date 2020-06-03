@@ -4,8 +4,8 @@ let rays;
 
 function setup() {
   createCanvas(WINDOW_WIDTH, WINDOW_HEIGHT);
-  map = new Map();
   player = new Player();
+  map = new Map(NUM_ROWS, NUM_COLS, TILE_SIZE);
   rays = new Rays();
 }
 
@@ -45,25 +45,30 @@ function render3DProjectedWalls() {
 }
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) {
+  if (keyCode === UP_ARROW || keyCode === 87) {
     player.moveDirection = 1;
-  } else if (keyCode === DOWN_ARROW) {
+  } else if (keyCode === DOWN_ARROW || keyCode === 83) {
     player.moveDirection = -1;
-  } else if (keyCode === LEFT_ARROW) {
+  } else if (keyCode === LEFT_ARROW || keyCode === 65) {
     player.turnDirection = -1;
-  } else if (keyCode === RIGHT_ARROW) {
+  } else if (keyCode === RIGHT_ARROW || keyCode === 68) {
     player.turnDirection = 1;
+  } else if (keyCode === 32) {
+    // SPACE key pressed
+    player = new Player();
+    map = new Map(NUM_ROWS, NUM_COLS, TILE_SIZE);
+    rays = new Rays();
   }
 }
 
 function keyReleased() {
-  if (keyCode === UP_ARROW) {
+  if (keyCode === UP_ARROW || keyCode === 87) {
     player.moveDirection = 0;
-  } else if (keyCode === DOWN_ARROW) {
+  } else if (keyCode === DOWN_ARROW || keyCode === 83) {
     player.moveDirection = 0;
-  } else if (keyCode === LEFT_ARROW) {
+  } else if (keyCode === LEFT_ARROW || keyCode === 65) {
     player.turnDirection = 0;
-  } else if (keyCode === RIGHT_ARROW) {
+  } else if (keyCode === RIGHT_ARROW || keyCode === 68) {
     player.turnDirection = 0;
   }
 }
