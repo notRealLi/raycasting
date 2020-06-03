@@ -3,10 +3,9 @@ let player;
 let rays;
 
 function setup() {
+  configWindow();
   createCanvas(WINDOW_WIDTH, WINDOW_HEIGHT);
-  player = new Player();
-  map = new Map(NUM_ROWS, NUM_COLS, TILE_SIZE);
-  rays = new Rays();
+  initModels();
 }
 
 function update() {
@@ -22,6 +21,22 @@ function draw() {
   map.render(MINI_MAP_SCALE_FACTOR);
   rays.renderAll(player.x, player.y, MINI_MAP_SCALE_FACTOR);
   player.render(MINI_MAP_SCALE_FACTOR);
+}
+
+function configWindow() {
+  TILE_SIZE = Math.min(
+    Math.floor((windowWidth * 0.95) / NUM_COLS),
+    MAX_TILE_SIZE
+  );
+  WINDOW_WIDTH = TILE_SIZE * NUM_COLS;
+  WINDOW_HEIGHT = TILE_SIZE * NUM_ROWS;
+  NUM_RAYS = WINDOW_WIDTH / WALL_STRIP_WIDTH;
+}
+
+function initModels() {
+  player = new Player();
+  map = new Map(NUM_ROWS, NUM_COLS, TILE_SIZE);
+  rays = new Rays();
 }
 
 function render3DProjectedWalls() {
@@ -40,8 +55,8 @@ function render3DProjectedWalls() {
     const wallPosX3D = i * wallWidth3D;
     const wallPosY3D = (WINDOW_HEIGHT - wallHeight3D) * 0.5;
 
-    const shade = (distanceToWall2D / WINDOW_HEIGHT) * 0.6;
-    fill(`rgba(255, 255, 255, ${1 - shade})`);
+    const shade = 1 - (distanceToWall2D / WINDOW_HEIGHT) * 0.6;
+    fill(`rgba(255, 255, 255, ${shade})`);
     noStroke();
     rect(wallPosX3D, wallPosY3D, wallWidth3D, wallHeight3D);
   }
@@ -76,6 +91,14 @@ function keyReleased() {
   }
 }
 
-function mousePressed() {
-  console.log(rays.rays[0].wallHitX, rays.rays[0].wallHitY);
+function windowResized() {
+  configWindow();
+  createCanvas(WINDOW_WIDTH, WINDOW_HEIGHT);
+  initModels();
+
+  clear("#555");
+  render3DProjectedWalls();
+  map.render(MINI_MAP_SCALE_FACTOR);
+  rays.renderAll(player.x, player.y, MINI_MAP_SCALE_FACTOR);
+  player.render(MINI_MAP_SCALE_FACTOR);
 }

@@ -1,15 +1,16 @@
-//const TILE_SIZE = 64;
-const TILE_SIZE = 38;
 const NUM_ROWS = 11;
 const NUM_COLS = 15;
-const WINDOW_WIDTH = TILE_SIZE * NUM_COLS;
-const WINDOW_HEIGHT = TILE_SIZE * NUM_ROWS;
+const MAX_TILE_SIZE = 62;
+let TILE_SIZE;
+let WINDOW_WIDTH;
+let WINDOW_HEIGHT;
 
 const FOV_ANGLE = Math.PI * (60 / 180);
 const WALL_STRIP_WIDTH = 1; // pixels
-const NUM_RAYS = WINDOW_WIDTH / WALL_STRIP_WIDTH;
-//const MINI_MAP_SCALE_FACTOR = 0.2;
-const MINI_MAP_SCALE_FACTOR = 0.4;
+
+let NUM_RAYS;
+//const MINI_MAP_SCALE_FACTOR = 0.3;
+const MINI_MAP_SCALE_FACTOR = 0.23;
 
 function normalizeAngle(angle) {
   angle = angle % (Math.PI * 2);
@@ -28,5 +29,5 @@ function flipACoin() {
 }
 
 function playerSpawnPositionHeuristic(row, col) {
-  return (row === 5 || row === 6) && col === 7;
+  return (row === 4 || row === 5 || row === 6 || row === 7) && col === 7;
 }

@@ -12,13 +12,6 @@ function Player() {
     noStroke();
     fill("grey");
     circle(this.x * scale, this.y * scale, this.radius * scale);
-    // stroke("red");
-    // line(
-    //   this.x,
-    //   this.y,
-    //   this.x + 20 * Math.cos(this.rotation),
-    //   this.y + 20 * Math.sin(this.rotation)
-    // );
   };
 
   this.update = (wallCollisionDetector) => {
