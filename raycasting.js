@@ -28,7 +28,9 @@ function render3DProjectedWalls() {
   for (let i = 0; i < rays.size(); i++) {
     const ray = rays.get(i);
 
-    const distanceToWall2D = ray.distance;
+    const distortedDistanceToWall2D = ray.distance;
+    const distanceToWall2D =
+      distortedDistanceToWall2D * Math.cos(player.rotation - ray.angle);
     const wallHeight2D = TILE_SIZE; // not necessarily tied to TILE_SIZE
     const distanceToWall3D = (WINDOW_WIDTH * 0.5) / Math.tan(FOV_ANGLE / 2);
 
@@ -38,7 +40,8 @@ function render3DProjectedWalls() {
     const wallPosX3D = i * wallWidth3D;
     const wallPosY3D = (WINDOW_HEIGHT - wallHeight3D) * 0.5;
 
-    fill("rgba(255, 255, 255, 1)");
+    const shade = (distanceToWall2D / WINDOW_HEIGHT) * 0.6;
+    fill(`rgba(255, 255, 255, ${1 - shade})`);
     noStroke();
     rect(wallPosX3D, wallPosY3D, wallWidth3D, wallHeight3D);
   }

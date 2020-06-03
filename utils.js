@@ -1,5 +1,5 @@
 //const TILE_SIZE = 64;
-const TILE_SIZE = 36;
+const TILE_SIZE = 38;
 const NUM_ROWS = 11;
 const NUM_COLS = 15;
 const WINDOW_WIDTH = TILE_SIZE * NUM_COLS;
